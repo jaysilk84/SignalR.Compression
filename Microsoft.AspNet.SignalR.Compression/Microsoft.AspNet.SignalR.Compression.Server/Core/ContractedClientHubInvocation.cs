@@ -7,7 +7,7 @@ namespace Microsoft.AspNet.SignalR.Compression.Server
     {
         public ContractedClientHubInvocation(ClientHubInvocation invocation)
         {
-            Target = invocation.Target;
+            //Target = invocation.Target; I think this was removed
             Hub = invocation.Hub;
             Method = invocation.Method;
             Args = invocation.Args;

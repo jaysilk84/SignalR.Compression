@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Hubs;
 using Microsoft.AspNet.SignalR.Json;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace Microsoft.AspNet.SignalR.Compression.Server
@@ -11,20 +12,20 @@ namespace Microsoft.AspNet.SignalR.Compression.Server
     internal class DefaultContractsGenerator : IContractsGenerator
     {
         private Lazy<JRaw> _generatedContracts;
-        private IJsonSerializer _serializer;
+        private JsonSerializer _serializer;
         private IPayloadDescriptorProvider _payloadProvider;
         private IMethodDescriptorProvider _methodProvider;
         private IHubDescriptorProvider _hubProvider;
 
         public DefaultContractsGenerator(IDependencyResolver resolver)
-            : this(resolver.Resolve<IJsonSerializer>(),
+            : this(new JsonSerializer(),
                    resolver.Resolve<IPayloadDescriptorProvider>(),
                    resolver.Resolve<IMethodDescriptorProvider>(),
                    resolver.Resolve<IHubDescriptorProvider>())
         {
         }
 
-        public DefaultContractsGenerator(IJsonSerializer serializer, IPayloadDescriptorProvider payloadProvider, IMethodDescriptorProvider methodProvider, IHubDescriptorProvider hubProvider)
+        public DefaultContractsGenerator(JsonSerializer serializer, IPayloadDescriptorProvider payloadProvider, IMethodDescriptorProvider methodProvider, IHubDescriptorProvider hubProvider)
         {
             _serializer = serializer;
             _payloadProvider = payloadProvider;
@@ -152,7 +153,7 @@ namespace Microsoft.AspNet.SignalR.Compression.Server
                                                                         }));
         }
 
-        private static object CreateContractsCache(IJsonSerializer serializer, IPayloadDescriptorProvider payloadProvider, IMethodDescriptorProvider methodProvider, IHubDescriptorProvider hubProvider)
+        private static object CreateContractsCache(JsonSerializer serializer, IPayloadDescriptorProvider payloadProvider, IMethodDescriptorProvider methodProvider, IHubDescriptorProvider hubProvider)
         {
             var methodReturnContracts = CreateMethodReturnContracts(payloadProvider, methodProvider, hubProvider);
 

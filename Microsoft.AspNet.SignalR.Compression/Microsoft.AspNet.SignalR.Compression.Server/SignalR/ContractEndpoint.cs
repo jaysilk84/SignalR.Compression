@@ -11,11 +11,11 @@ namespace Microsoft.AspNet.SignalR.Compression.Server
     {
         private IContractsGenerator _contractGenerator;
 
-        public override void Initialize(IDependencyResolver resolver, HostContext context)
+        public override void Initialize(IDependencyResolver resolver)
         {
             _contractGenerator = resolver.Resolve<IContractsGenerator>();
 
-            base.Initialize(resolver, context);
+            base.Initialize(resolver);
         }
 
         private Task ProcessJsonpRequest(HostContext context, object payload)

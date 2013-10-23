@@ -10,8 +10,8 @@ namespace Microsoft.AspNet.SignalR.Compression.Client.JS.Tests
     {
         protected void Application_Start(object sender, EventArgs e)
         {
-            GlobalHost.DependencyResolver.Compression().CompressPayloads(RouteTable.Routes);
-            RouteTable.Routes.MapHubs();
+            //GlobalHost.DependencyResolver.Compression().CompressPayloads(RouteTable.Routes);
+            //RouteTable.Routes.();
         }
     }
 }

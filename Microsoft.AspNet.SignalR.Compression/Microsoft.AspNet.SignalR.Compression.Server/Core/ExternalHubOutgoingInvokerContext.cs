@@ -37,5 +37,12 @@ namespace Microsoft.AspNet.SignalR.Compression.Server
             get;
             private set;
         }
+
+
+        public IList<string> Signals
+        {
+            get;
+            set;
+        }
     }
 }

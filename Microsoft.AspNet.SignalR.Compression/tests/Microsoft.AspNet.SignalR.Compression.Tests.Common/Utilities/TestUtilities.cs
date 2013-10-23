@@ -5,6 +5,7 @@ using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Hubs;
 using Microsoft.AspNet.SignalR.Json;
 using Microsoft.AspNet.SignalR.Compression.Server;
+using Newtonsoft.Json;
 using Xunit;
 
 namespace Microsoft.AspNet.SignalR.Compression.Tests.Common.Utilities
@@ -37,9 +38,10 @@ namespace Microsoft.AspNet.SignalR.Compression.Tests.Common.Utilities
             return BuildCompressionDependencyResolver().Resolve<IPayloadDescriptorProvider>();
         }
 
-        public static IJsonSerializer BuildJsonSerializer()
+        public static JsonSerializer BuildJsonSerializer()
         {
-            return BuildCompressionDependencyResolver().Resolve<IJsonSerializer>();
+            //return BuildCompressionDependencyResolver().Resolve<IJsonSerializer>();
+            return new JsonSerializer();
         }
 
         public static IPayloadCompressor BuildPayloadCompressor()
