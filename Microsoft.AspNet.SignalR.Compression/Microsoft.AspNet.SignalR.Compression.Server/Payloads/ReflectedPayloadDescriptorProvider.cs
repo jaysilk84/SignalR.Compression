@@ -41,6 +41,7 @@ namespace Microsoft.AspNet.SignalR.Compression.Server
                         RoundNumbersTo = ((PayloadAttribute)Attribute.GetCustomAttribute(type, typeof(PayloadAttribute))).RoundNumbersTo
                     },
                     Data = type.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                               //.Where(p => !p.PropertyType.IsGenericParameter)
                                .Select(propertyInfo =>
                                 {
                                     var descriptor = new DataDescriptor
@@ -54,6 +55,17 @@ namespace Microsoft.AspNet.SignalR.Compression.Server
                                             },
                                             GetValue = (baseObject) =>
                                             {
+                                                if (type.IsGenericType)
+                                                {
+                                                    // When the type is generic, we have to GetValue from the
+                                                    // constructed type, not the definition
+                                                    return
+                                                        baseObject.GetType()
+                                                            .GetProperty(propertyInfo.Name)
+                                                            .GetValue(baseObject, null);
+                                                }
+
+                                                // This is more perfomant when the type is not generic
                                                 return propertyInfo.GetValue(baseObject, null);
                                             }
                                         };
@@ -76,6 +88,17 @@ namespace Microsoft.AspNet.SignalR.Compression.Server
                                             },
                                             GetValue = (baseObject) =>
                                             {
+                                                if (type.IsGenericType)
+                                                {
+                                                    // When the type is generic, we have to GetValue from the
+                                                    // constructed type, not the definition
+                                                    return
+                                                        baseObject.GetType()
+                                                            .GetField(fieldInfo.Name)
+                                                            .GetValue(baseObject);
+                                                }
+
+                                                // This is more perfomant when the type is not generic
                                                 return fieldInfo.GetValue(baseObject);
                                             }
                                         };
@@ -123,8 +146,18 @@ namespace Microsoft.AspNet.SignalR.Compression.Server
             }
         }
 
+        private Type DiscoverType(Type type)
+        {
+            if (type.IsGenericType)
+                return type.GetGenericTypeDefinition();
+
+            return type;
+        }
+
         public PayloadDescriptor GetPayload(Type type)
         {
+            type = DiscoverType(type);
+
             if (IsPayload(type))
             {
                 return _payloads.Value[type];
@@ -135,6 +168,7 @@ namespace Microsoft.AspNet.SignalR.Compression.Server
 
         public bool IsPayload(Type type)
         {
+            type = DiscoverType(type);
             return _payloads.Value.Keys.Contains(type);
         }
 

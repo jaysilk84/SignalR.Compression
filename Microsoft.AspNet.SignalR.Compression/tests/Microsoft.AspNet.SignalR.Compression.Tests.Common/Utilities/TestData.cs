@@ -33,6 +33,82 @@ namespace Microsoft.AspNet.SignalR.Compression.Tests.Common.Utilities
             };
         }
 
+        public static object[] GetCompressableGenericDataSet()
+        {
+            return new object[]
+            {
+                new Event<IList<EventData<string>>>()
+                {
+                    EventId = 5,
+                    EventData = new List<EventData<string>>()
+                    {
+                        new EventData<string> { Property = "Prop1"},
+                        new EventData<string> { Property = "Prop2"},
+                        new EventData<string> { Property = "Prop3"},
+                    }
+                },
+                new Event<IList<EventData<string>>>()
+                {
+                    EventId = 1,
+                    EventData = new List<EventData<string>>()
+                    {
+                        new EventData<string> { Property = "E1Prop1"},
+                    }
+                },
+                new Event<IList<EventData<string>>>()
+                {
+                    EventData = new List<EventData<string>>()
+                    {
+                        new EventData<string> { Property = "E0Prop1"},
+                    }
+                },
+            };
+
+        }
+
+        public static object[] GetExpectedCompressableGenericDataSetResult()
+        {
+            return new object[]
+            {
+                // Event
+                new object[] 
+                {
+                    // Event Data List
+                    new object[]
+                    {
+                        // Event Data
+                        new object[] {"Prop1"},
+                        new object[] {"Prop2"},
+                        new object[] {"Prop3"},
+                    }, 
+                    // EventId
+                    5
+                },
+                // Event
+                new object[] 
+                {
+                    // Event Data List
+                    new object[]
+                    {
+                        // Event Data
+                        new object[] {"E1Prop1"},
+                    }, 
+                    // EventId
+                    1
+                },
+                // Event
+                new object[] 
+                {
+                    // Event Data List
+                    new object[]
+                    {
+                        // Event Data
+                        new object[] {"E0Prop1"},
+                    }
+                }
+            };
+        }
+
         public static object[] GetCompressableDataSet()
         {
             return new object[] 

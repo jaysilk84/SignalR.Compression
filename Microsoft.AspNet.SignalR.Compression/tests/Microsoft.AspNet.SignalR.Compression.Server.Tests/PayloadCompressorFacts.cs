@@ -34,6 +34,20 @@ namespace Microsoft.AspNet.SignalR.Compression.Server.Tests
         }
 
         [Fact]
+        public void CanCompressGenericTypes()
+        {
+            var compressor = TestUtilities.BuildPayloadCompressor();
+            var serializer = TestUtilities.BuildJsonSerializer();
+            var payloads = TestData.GetCompressableGenericDataSet();
+            var results = TestData.GetExpectedCompressableGenericDataSetResult();
+
+            for (var i = 0; i < payloads.Length; i++)
+            {
+                Assert.Equal(results[i], serializer.Stringify(compressor.Compress(payloads[i])));
+            }
+        }
+
+        [Fact]
         public void CompressAbidesByCompressionSettings()
         {
             var compressor = TestUtilities.BuildPayloadCompressor();

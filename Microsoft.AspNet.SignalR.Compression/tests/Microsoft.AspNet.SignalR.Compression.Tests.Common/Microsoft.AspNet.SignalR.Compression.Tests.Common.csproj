@@ -64,6 +64,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Payloads\Event.cs" />
+    <Compile Include="Payloads\EventData.cs" />
     <Compile Include="Payloads\Parent.cs" />
     <Compile Include="Payloads\Person.cs" />
     <Compile Include="Payloads\Student.cs" />
